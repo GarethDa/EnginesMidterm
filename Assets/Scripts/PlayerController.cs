@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour
     public GameObject bullet;
     public Transform bulletPos;
 
+    bool shooting = false;
+
+    float shootTime = 0f;
+    float fireSpeed = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,6 +56,7 @@ public class PlayerController : MonoBehaviour
 
         //Add context for shoot listener
         inputAction.Player.Shoot.performed += cntxt => Shoot();
+        inputAction.Player.Shoot.canceled += cntxt => StopShoot();
 
         //Freeze the rotation of the rigid body, ensuring it doesn't fall over
         rb.freezeRotation = true;
@@ -68,12 +74,12 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
-        //Clone the base bullet and place it in front of the barrel of the gun
-        Rigidbody bulletRb = Instantiate(bullet, bulletPos.position, Quaternion.identity).GetComponent<Rigidbody>();
-       
-        //Propel the bullet forward and upward
-        bulletRb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-        bulletRb.AddForce(transform.up * 5f, ForceMode.Impulse);
+        shooting = true;
+    }
+
+    private void StopShoot()
+    {
+        shooting = false;
     }
 
     // Update is called once per frame
@@ -97,5 +103,27 @@ public class PlayerController : MonoBehaviour
 
         //Set the animation parameter to the current walking state
         playerAnimator.SetBool("IsWalking", isWalking);
+
+        if (shooting)
+        {
+            shootTime += Time.deltaTime;
+
+            if (shootTime >= fireSpeed)
+            {
+                shootTime = 0f;
+
+                //Clone the base bullet and place it in front of the barrel of the gun
+                Rigidbody bulletRb = Instantiate(bullet, bulletPos.position, Quaternion.identity).GetComponent<Rigidbody>();
+
+                //Propel the bullet forward and upward
+                bulletRb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+                bulletRb.AddForce(transform.up * 5f, ForceMode.Impulse);
+            }
+        }
+    }
+
+    public void ChangeFireSpeed(float newFireSpeed)
+    {
+        fireSpeed = newFireSpeed;
     }
 }

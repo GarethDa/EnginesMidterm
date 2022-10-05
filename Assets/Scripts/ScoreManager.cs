@@ -21,7 +21,7 @@ public class ScoreManager : MonoBehaviour
             instance = this;
         }
 
-        winText.gameObject.SetActive(false);
+        //winText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -29,8 +29,8 @@ public class ScoreManager : MonoBehaviour
     {
         if (score >= winValue)
         {
-            winText.gameObject.SetActive(true);
-            Time.timeScale = 0f;
+            //winText.gameObject.SetActive(true);
+            //Time.timeScale = 0f;
         }
     }
 
