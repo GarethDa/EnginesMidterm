@@ -6,7 +6,14 @@ public abstract class Observer
 {
     public abstract void OnNotify();
 }
-
+/*
+public class Bell : Observer
+{
+    GameObject bell;
+    BellHit
+}
+*/
+/*
 public class SpikeBall : Observer
 {
     GameObject spikeObj;
@@ -31,3 +38,4 @@ public class SpikeBall : Observer
         }
     }
 }
+*/
